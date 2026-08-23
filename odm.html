@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✨ODM OPENING 2026✨</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #c58736, #d78519, #782f08);
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #fireworksCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .container {
+        position: relative;
+        z-index: 10;
+        width: 90%;
+        max-width: 420px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #start-screen {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        padding: 40px 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .star-icon-img {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 12px;
+        display: inline-block;
+        border: 0px solid rgba(255, 255, 255, 0.6);
+        box-shadow:
+          0 0 15px rgba(255, 255, 0, 0.8),
+          0 0 30px rgba(255, 255, 0, 0.5);
+        animation: pulseLight 1.8s infinite alternate;
+      }
+
+      /* Animasi Sinar Membesar & Memancarkan Cahaya */
+      @keyframes pulseLight {
+        0% {
+          transform: scale(1);
+          box-shadow:
+            0 0 10px rgba(208, 97, 53, 0.6),
+            0 0 20px rgba(176, 60, 18, 0.4),
+            0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        100% {
+          transform: scale(1.08);
+          box-shadow:
+            0 0 20px rgba(255, 215, 0, 1),
+            0 0 35px rgba(255, 180, 0, 0.8),
+            0 0 50px rgba(255, 180, 0, 0.6);
+        }
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+        color: #ffffff;
+        font-weight: 700;
+      }
+
+      p.subtitle {
+        font-size: 0.95rem;
+        color: #e0e0e0;
+        margin-bottom: 30px;
+        line-height: 1.5;
+      }
+
+      .btn-start {
+        background: linear-gradient(135deg, #f8b500, #fceabb);
+        color: #333;
+        border: none;
+        padding: 15px 35px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(248, 181, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .btn-start:hover {
+        transform: scale(1.06);
+        box-shadow: 0 12px 30px rgba(248, 181, 0, 0.6);
+      }
+
+      #lyrics-screen {
+        display: none;
+        width: 100%;
+        animation: fadeIn 1.2s ease-in-out;
+      }
+
+      .photo-slider {
+        position: relative;
+        width: 230px;
+        height: 310px;
+        margin: 0 auto 15px auto;
+        background: #ffffff;
+        padding: 10px 10px 45px 10px;
+        border-radius: 12px;
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.6),
+          0 0 15px rgba(255, 255, 255, 0.2);
+        transform: rotate(-1.5deg);
+        transition: transform 0.3s ease;
+      }
+
+      .photo-slider:hover {
+        transform: rotate(0deg) scale(1.02);
+      }
+
+      .slide-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 6px;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition:
+          opacity 1s ease-in-out,
+          transform 1.2s ease-in-out;
+        transform: scale(1.05);
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .polaroid-caption {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: #2b2b2b;
+        font-family: "Comic Sans MS", "Segoe UI", cursive, sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .slider-btn {
+        position: absolute;
+        top: 45%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        backdrop-filter: blur(5px);
+        z-index: 5;
+        transition: background 0.3s;
+      }
+
+      .slider-btn:hover {
+        background: rgba(215, 149, 58, 0.9);
+      }
+
+      .prev-btn {
+        left: -12px;
+      }
+      .next-btn {
+        right: -12px;
+      }
+
+      .song-title {
+        font-size: 0.75rem;
+        color: #f1cf59;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .lyrics-card {
+        width: 100%;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 18px;
+        padding: 15px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        min-height: 85px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .lyrics-text {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 1.4;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .falling-item {
+        position: absolute;
+        user-select: none;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .float-down-anim {
+        animation: floatDown linear forwards;
+      }
+
+      @keyframes floatDown {
+        0% {
+          transform: translateY(-5vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(105vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      @keyframes clickBurst {
+        0% {
+          transform: translate(-50%, -50%) scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -70px) scale(1.5);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="fireworksCanvas"></canvas>
+
+    <audio id="myAudio" preload="auto" loop>
+      <source src="ssstik.io_1787502724582.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="container">
+      <!-- Layar Awal -->
+      <div id="start-screen">
+        <img
+          src="Logo ODM.PNG"
+          alt="Logo Opening ODM 2026"
+          class="star-icon-img"
+        />
+        <h1>OPENING ODM 2026</h1>
+        <p class="subtitle">
+          Spesial buat kalian yang udah jadi bagian dari kenangan Opening ODM
+          2026. sebentar ya... Klik tombol di bawah! ✨
+        </p>
+        <button class="btn-start" onclick="playEverything()">
+          Buka Memori 🌟
+        </button>
+      </div>
+
+      <!-- Layar Utama Lirik & Foto (Sekarang ada di DALAM .container agar tetap Center) -->
+      <div id="lyrics-screen">
+        <div class="photo-slider">
+          <button class="slider-btn prev-btn" onclick="manualPrev()">❮</button>
+
+          <div class="slide-container">
+            <div class="slide active"><img src="20537.jpg" alt="Foto 1" /></div>
+            <div class="slide"><img src="20538.jpg" alt="Foto 2" /></div>
+            <div class="slide"><img src="20539.jpg" alt="Foto 3" /></div>
+            <div class="slide"><img src="20540.jpg" alt="Foto 4" /></div>
+            <div class="slide"><img src="20541.jpg" alt="Foto 5" /></div>
+            <div class="slide"><img src="20542.jpg" alt="Foto 6" /></div>
+            <div class="slide"><img src="20543.jpg" alt="Foto 7" /></div>
+            <div class="slide"><img src="20544.jpg" alt="Foto 8" /></div>
+            <div class="slide"><img src="20545.jpg" alt="Foto 9" /></div>
+            <div class="slide"><img src="20546.jpg" alt="Foto 10" /></div>
+          </div>
+
+          <div class="polaroid-caption" id="caption-text">OPENING ODM 2026</div>
+
+          <button class="slider-btn next-btn" onclick="manualNext()">❯</button>
+        </div>
+
+        <div class="song-title">Backstreet Boys — Shape of My Heart 🎵</div>
+        <div class="lyrics-card">
+          <div class="lyrics-text" id="lyrics"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const audio = document.getElementById("myAudio");
+      const lyricsDiv = document.getElementById("lyrics");
+      const captionDiv = document.getElementById("caption-text");
+
+      const captions = [
+        "Rapokja yukk 😂",
+        "Kita rapokja dimuldom nyakk 🤪",
+        "Kepantai yukk 📸",
+        "Trello jangan lupa dicek yaa ☕",
+        "Buggy car udah dihubungi?? 😎",
+        "Konsum PPI sama Racana jangan lupa ✨",
+        "Semangatt teruss yaa 🚀",
+        "Ges udah ada yang distadion?",
+        "Jangan lupa tidurr yaa",
+        "Main yukkk 😉",
+      ];
+
+      const lyricsData = [
+        {
+          text: "I'm lookin' back on things I've done...",
+          start: 0.5,
+          speed: 60,
+        },
+        {
+          text: "I never wanna play the same old part...",
+          start: 6.0,
+          speed: 60,
+        },
+        {
+          text: "I'll keep you in the dark...",
+          start: 11.5,
+          speed: 60,
+        },
+        {
+          text: "Now let me show you the shape of my heart...",
+          start: 16.0,
+          speed: 60,
+        },
+      ];
+
+      let currentLyricIndex = -1;
+      let typingTimeout = null;
+
+      function playEverything() {
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("lyrics-screen").style.display = "block";
+
+        displayLyric(lyricsData[0]);
+        currentLyricIndex = 0;
+
+        audio.currentTime = 0;
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.log("File MP3 tidak ditemukan, memutar audio cadangan...");
+            audio.src =
+              "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3";
+            audio.loop = true;
+            audio.play();
+          });
+        }
+
+        audio.addEventListener("timeupdate", checkSync);
+
+        audio.addEventListener("seeked", () => {
+          if (audio.currentTime < 1) {
+            currentLyricIndex = -1;
+          }
+        });
+
+        setInterval(createFallingStars, 400);
+        initFireworks();
+        startAutoSlider();
+      }
+
+      function checkSync() {
+        const currentTime = audio.currentTime;
+
+        if (currentTime < lyricsData[0].start && currentLyricIndex !== -1) {
+          currentLyricIndex = -1;
+        }
+
+        for (let i = lyricsData.length - 1; i >= 0; i--) {
+          if (currentTime >= lyricsData[i].start) {
+            if (currentLyricIndex !== i) {
+              currentLyricIndex = i;
+              displayLyric(lyricsData[i]);
+            }
+            break;
+          }
+        }
+      }
+
+      function displayLyric(lyricObj) {
+        if (typingTimeout) clearTimeout(typingTimeout);
+        lyricsDiv.innerHTML = "";
+        let i = 0;
+
+        function type() {
+          if (i < lyricObj.text.length) {
+            lyricsDiv.innerHTML += lyricObj.text.charAt(i);
+            i++;
+            typingTimeout = setTimeout(type, lyricObj.speed);
+          }
+        }
+        type();
+      }
+
+      /* EFEK BINTANG MELAYANG */
+      function createFallingStars() {
+        const item = document.createElement("div");
+        item.classList.add("falling-item", "float-down-anim");
+
+        const symbols = ["✨", "🌟", "🎓", "🍀", "💫", "❤️"];
+        item.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+        item.style.left = Math.random() * 100 + "vw";
+        item.style.fontSize = Math.random() * 12 + 16 + "px";
+        item.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 7000);
+      }
+
+      document.addEventListener("click", function (e) {
+        const burst = document.createElement("div");
+        burst.classList.add("falling-item");
+        const icons = ["✨", "🌟", "💥", "🎓", "🤝", "❤️"];
+        burst.innerText = icons[Math.floor(Math.random() * icons.length)];
+        burst.style.left = e.clientX + "px";
+        burst.style.top = e.clientY + "px";
+        burst.style.fontSize = "22px";
+        burst.style.animation = "clickBurst 0.8s ease-out forwards";
+        document.body.appendChild(burst);
+        setTimeout(() => burst.remove(), 800);
+      });
+
+      /* SLIDER POLAROID */
+      let currentSlide = 0;
+      const slides = document.getElementsByClassName("slide");
+      let slideInterval;
+
+      function showSlide(index) {
+        if (index >= slides.length) currentSlide = 0;
+        else if (index < 0) currentSlide = slides.length - 1;
+        else currentSlide = index;
+
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("active");
+        }
+        slides[currentSlide].classList.add("active");
+
+        if (captions[currentSlide]) {
+          captionDiv.innerText = captions[currentSlide];
+        }
+      }
+
+      function nextSlide() {
+        showSlide(currentSlide + 1);
+      }
+      function prevSlide() {
+        showSlide(currentSlide - 1);
+      }
+
+      function startAutoSlider() {
+        slideInterval = setInterval(nextSlide, 3000);
+      }
+
+      function manualNext() {
+        clearInterval(slideInterval);
+        nextSlide();
+        startAutoSlider();
+      }
+
+      function manualPrev() {
+        clearInterval(slideInterval);
+        prevSlide();
+        startAutoSlider();
+      }
+
+      /* ANIMASI KEMBANG API */
+      function initFireworks() {
+        const canvas = document.getElementById("fireworksCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        let fireworks = [];
+        let particles = [];
+        const colors = ["#f8b500", "#00d2d3", "#54a0ff", "#ff9ff3", "#fca311"];
+
+        class Firework {
+          constructor(side) {
+            this.side = side;
+            this.x =
+              side === "left"
+                ? Math.random() * (canvas.width * 0.22) + canvas.width * 0.03
+                : Math.random() * (canvas.width * 0.22) + canvas.width * 0.75;
+            this.y = canvas.height;
+            this.targetY =
+              Math.random() * (canvas.height * 0.4) + canvas.height * 0.1;
+            this.speed = Math.random() * 3 + 7;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+
+          update() {
+            this.y -= this.speed;
+            if (this.y <= this.targetY) {
+              this.explode();
+              return true;
+            }
+            return false;
+          }
+
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+          }
+
+          explode() {
+            for (let i = 0; i < 35; i++) {
+              particles.push(new Particle(this.x, this.y, this.color));
+            }
+          }
+        }
+
+        class Particle {
+          constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 4 + 1;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.015 + 0.015;
+          }
+
+          update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.05;
+            this.alpha -= this.decay;
+            return this.alpha <= 0;
+          }
+
+          draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+
+        setInterval(() => fireworks.push(new Firework("left")), 1200);
+        setInterval(() => fireworks.push(new Firework("right")), 1500);
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = fireworks.length - 1; i >= 0; i--) {
+            fireworks[i].draw();
+            if (fireworks[i].update()) fireworks.splice(i, 1);
+          }
+          for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].draw();
+            if (particles[i].update()) particles.splice(i, 1);
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+    </script>
+  </body>
+</html>
